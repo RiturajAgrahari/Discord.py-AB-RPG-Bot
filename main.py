@@ -1,0 +1,123 @@
+import discord
+from datetime import datetime
+from typing import Literal
+
+from discord import app_commands
+from discord.ext import tasks
+
+from profile import *
+from embed import daily_koen_embed, help_embed
+from event import letter_event
+
+
+MY_GUILD = discord.Object(id=850804938510172182)
+TOKEN = open('../Credentials/AB RPG/token.txt', 'r').read()
+KOEN_EMOJI = '<:Koen:1199302656825511988>'
+
+
+class MyClient(discord.Client):
+    def __init__(self, *, intents:discord.Intents):
+        super().__init__(intents=intents)
+        self.tree = app_commands.CommandTree(self)
+
+    async def setup_hook(self):
+        self.tree.copy_global_to(guild=MY_GUILD)
+        await self.tree.sync(guild=MY_GUILD)
+
+
+intents = discord.Intents.default()
+intents.message_content = True
+client = MyClient(intents=intents)
+
+
+@client.event
+async def on_ready():
+    print(f'Your Arena Breakout bot in succesfully started as {client.user} (ID: {client.user.id})')
+    print('-----')
+    my_loop.start()
+
+    global guild_name
+    guild_name = client.guilds[0]
+
+
+@tasks.loop(minutes=1)
+async def my_loop():
+    # Get the current UTC time
+    current_time_utc = datetime.utcnow().time()
+
+    # Check if it's UTC 00:00
+    if current_time_utc.hour == 0 and current_time_utc.minute == 0:
+        await reset_data()
+
+
+@client.event
+async def on_message(message):
+    # Checks if the message is recieved in DM
+    if message.channel.type == discord.ChannelType.private:
+        print(f'DM --> [{message.author}] : {message.content}')
+
+    # Check if the message author is not client itself
+    if message.author == client.user:
+        pass
+
+    # Message in server channels
+    else:
+        username = str(message.author).split('#')[0]
+        user_message = str(message.content)
+        channel = str(message.channel.name)
+        # print(f'[channel: {channel}] --> {username}: {user_message}')
+
+        if channel == 'rpg':
+            print('success')
+
+
+@client.tree.command(name='daily', description="claim your daily koens")
+async def daily(interaction: discord.Interaction):
+    print(f'{interaction.user} used /daily.')
+    uid = await check_profile(interaction)
+    koens = await daily_claim(uid)
+    if koens is not None:
+        embed = await daily_koen_embed(interaction, koens)
+        await interaction.response.send_message(embed=embed)
+    else:
+        await interaction.response.send_message(f'{interaction.user.mention} You already claimed your today\'s'
+                                                f' daily koens!', ephemeral=True)
+
+
+@client.tree.command(name='inventory', description='check your inventory')
+async def inventory(interaction: discord.Interaction):
+    uid = await check_profile(interaction)
+    avatar_url = await get_avatar_url(interaction)
+    await check_inventory(uid, interaction, avatar_url)
+
+
+@client.tree.command(name='events', description="Collect all the word and win rewards!")
+async def events(interaction: discord.Interaction, event: Literal["Open Letter Box"]):
+    uid = await check_profile(interaction)
+    if event == "Open Letter Box":
+        await letter_event(uid, interaction)
+
+
+@client.tree.command(name="help", description="Get the list of available commands")
+async def help(interaction: discord.Interaction):
+    avatar_url = await get_avatar_url(interaction)
+    embed = await help_embed(interaction.user.name, avatar_url)
+    await interaction.response.send_message(embed=embed)
+
+
+async def get_avatar_url(interaction):
+    try:
+        user_avatar_url = interaction.user.avatar.url
+        return user_avatar_url
+    except:
+        default_avatar_url = 'https://cdn.discordapp.com/attachments/1171092440233541632/1176439824622833764/Untitled.png?ex=656edff7&is=655c6af7&hm=3e2cd8767c426187fbfc3171749ccf0158152f94a9b64f5acb3ae0a868a907c5&'
+        return default_avatar_url
+
+
+async def reset_data():
+    print('reseting started...')
+    await reset_status()
+    print('reset successful!')
+
+client.run(f'{TOKEN}')
+
