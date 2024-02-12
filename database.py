@@ -1,9 +1,13 @@
+import os
+from dotenv import load_dotenv
 import mysql.connector
 
-HOST = open('../Credentials/AB RPG/mysql_host.txt', "r").read()
-USER = open('../Credentials/AB RPG/mysql_user.txt', "r").read()
-PASSWORD = open('../Credentials/AB RPG/mysql_password.txt', "r").read()
-DATABASE = open('../Credentials/AB RPG/mysql_database.txt', "r").read()
+load_dotenv()
+
+HOST = os.getenv("MY_SQL_HOST")
+USER = os.getenv("MY_SQL_USER")
+PASSWORD = os.getenv("MY_SQL_PASSWORD")
+DATABASE = os.getenv("MY_SQL_DATABASE")
 
 def open_database():
     mydb = mysql.connector.connect(

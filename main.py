@@ -1,7 +1,10 @@
+import os
 import discord
+
 from datetime import datetime
 from typing import Literal
 
+from dotenv import load_dotenv
 from discord import app_commands
 from discord.ext import tasks
 
@@ -9,9 +12,11 @@ from profile import *
 from embed import daily_koen_embed, help_embed
 from event import letter_event
 
+load_dotenv()
 
-MY_GUILD = discord.Object(id=850804938510172182)
-TOKEN = open('../Credentials/AB RPG/token.txt', 'r').read()
+MAIN_GUILD_ID = int(os.getenv("MAIN_SERVER_ID"))
+TEST_GUILD_ID = int(os.getenv("TEST_SERVER_ID"))
+
 KOEN_EMOJI = '<:Koen:1199302656825511988>'
 
 
@@ -21,8 +26,16 @@ class MyClient(discord.Client):
         self.tree = app_commands.CommandTree(self)
 
     async def setup_hook(self):
-        self.tree.copy_global_to(guild=MY_GUILD)
-        await self.tree.sync(guild=MY_GUILD)
+        # Set up command tree for the first guild
+        first_guild = discord.Object(id=MAIN_GUILD_ID)
+        self.tree.copy_global_to(guild=first_guild)
+        await self.tree.sync(guild=first_guild)
+
+        # Set up command tree for the second guild
+        second_guild = discord.Object(id=TEST_GUILD_ID)
+        if second_guild.id != MAIN_GUILD_ID:
+            self.tree.copy_global_to(guild=second_guild)
+            await self.tree.sync(guild=second_guild)
 
 
 intents = discord.Intents.default()
@@ -34,10 +47,7 @@ client = MyClient(intents=intents)
 async def on_ready():
     print(f'Your Arena Breakout bot in succesfully started as {client.user} (ID: {client.user.id})')
     print('-----')
-    my_loop.start()
-
-    global guild_name
-    guild_name = client.guilds[0]
+    await my_loop.start()
 
 
 @tasks.loop(minutes=1)
@@ -65,6 +75,7 @@ async def on_message(message):
         username = str(message.author).split('#')[0]
         user_message = str(message.content)
         channel = str(message.channel.name)
+        guild_name = message.guild.name
         # print(f'[channel: {channel}] --> {username}: {user_message}')
 
         if channel == 'rpg':
@@ -119,5 +130,26 @@ async def reset_data():
     await reset_status()
     print('reset successful!')
 
-client.run(f'{TOKEN}')
+
+# Last Optimization [19-01-2024] --> Need Relocation
+async def send_error(file, function_name, error, server='Anonymous'):
+    embed = discord.Embed(title=f'{server} Server',
+        description=file,
+        color=discord.Color.red()
+    )
+    embed.add_field(
+        name=function_name,
+        value=error,
+        inline=False
+    )
+    user = await client.fetch_user(568179896459722753)
+    await user.send(embed=embed)
+
+@client.event
+async def on_error(event, *args, **kwargs):
+    message = args[0] # Gets the message object
+    await send_error(__file__, event, 'Their is some error!')
+
+
+client.run(os.getenv("TOKEN"))
 
