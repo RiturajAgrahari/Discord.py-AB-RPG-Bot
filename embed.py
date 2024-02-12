@@ -2,7 +2,7 @@ import discord
 import string
 
 KOEN_EMOJI = '<:Koen:1199302656825511988>'
-
+EVENT_WORD = 'ARENA BREAKOUT'
 
 async def help_embed(name, avatar):
     embed = discord.Embed(
@@ -51,7 +51,6 @@ async def letter_event_embed(interaction, letter, owned):
     reword = False
     win = False
 
-    EVENT_WORD = 'ARENA BREAKOUT'
     progress = {}
     new_word = EVENT_WORD.replace(' ', '')
     for i in range(0, len(new_word)):  # {0: 'A', 1: 'R', 2: 'E', 3: 'N', 4: 'A', 5: 'B', 6: 'R', 7: 'E', 8: 'A'...}
@@ -134,7 +133,7 @@ async def letter_event_embed(interaction, letter, owned):
     else:
         embed.add_field(
             name=msg,
-            value=f'You got {refund} energy link back for this letter',
+            value=f'You got {refund} {KOEN_EMOJI} back for this letter',
             inline=False
         )
 
@@ -186,5 +185,27 @@ async def inventory_embed(koens, inventory, achievement, avatar_url, username, e
     if achievement is not None:
         embed.add_field(name='Achievement', value=achievement, inline=False)
     if event is not None:
-        embed.add_field(name='Event Storage', value=event, inline=False)
+        # embed.add_field(name='Event Storage', value=event, inline=False)
+        inventory = event.split(' ')
+        progress = {}
+        new_word = EVENT_WORD.replace(' ', '')
+        for i in range(0, len(new_word)):  # {0: 'A', 1: 'R', 2: 'E', 3: 'N', 4: 'A', 5: 'B', 6: 'R', 7: 'E', 8: 'A'...}
+            progress[i] = new_word[i]
+
+        for i in range(0, len(inventory) - 1):
+            if list(progress.values()).index(inventory[i][len(inventory[i])-2].upper()) in progress.keys():
+                progress[list(progress.values()).index(inventory[i][len(inventory[i])-2].upper())] = \
+                    f"{inventory[i]}"
+            else:
+                print(False)
+
+        result = ''
+        for key, value in progress.items():
+            result += f" {value}"
+
+        embed.add_field(
+            name=f'Your Word Event progress',
+            value=f'{result}',
+            inline=False
+        )
     return embed

@@ -12,7 +12,8 @@ async def letter_event(uid, interaction):
 
     if koen[0][0] >= 100:
         await update_query(table='inventory', key_value={'koens': 100}, condition_column='uid', condition_value=int(uid), operation='subtraction')
-        randomletter = random.choice(Choices)
+        # randomletter = random.choice(Choices)
+        randomletter = 'E'
         print(randomletter)
         items = await select_query(column='storage', table='events', condition_column='uid', condition_value=int(uid))
         embed, refund, reword, win = await letter_event_embed(interaction, randomletter, items[0][0])

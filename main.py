@@ -27,9 +27,9 @@ class MyClient(discord.Client):
 
     async def setup_hook(self):
         # Set up command tree for the first guild
-        first_guild = discord.Object(id=MAIN_GUILD_ID)
-        self.tree.copy_global_to(guild=first_guild)
-        await self.tree.sync(guild=first_guild)
+        # first_guild = discord.Object(id=MAIN_GUILD_ID)
+        # self.tree.copy_global_to(guild=first_guild)
+        # await self.tree.sync(guild=first_guild)
 
         # Set up command tree for the second guild
         second_guild = discord.Object(id=TEST_GUILD_ID)
@@ -149,7 +149,6 @@ async def send_error(file, function_name, error, server='Anonymous'):
 async def on_error(event, *args, **kwargs):
     message = args[0] # Gets the message object
     await send_error(__file__, event, 'Their is some error!')
-
 
 client.run(os.getenv("TOKEN"))
 
