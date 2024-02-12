@@ -11,6 +11,7 @@ from discord.ext import tasks
 from profile import *
 from embed import daily_koen_embed, help_embed
 from event import letter_event
+from database import create_updated_db
 
 load_dotenv()
 
@@ -81,6 +82,9 @@ async def on_message(message):
         if channel == 'rpg':
             print('success')
 
+            if message.content == 'test' and message.author.mention == '<@568179896459722753>':
+                print('AYOOOOOOOOOO!')
+                await create_updated_db()
 
 @client.tree.command(name='daily', description="claim your daily koens")
 async def daily(interaction: discord.Interaction):

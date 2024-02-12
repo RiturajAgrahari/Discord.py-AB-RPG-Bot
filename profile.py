@@ -13,7 +13,13 @@ async def check_profile(interaction: discord.Interaction):
         await create_events(uid)
         return uid
     else:
-        return output[0][0]
+        output_inv = await select_query(column='uid', table='inventory', condition_column='id', condition_value=output[0][0])
+        if len(output_inv) == 0:
+            await create_inventory(output[0][0])
+            await create_events(output[0][0])
+            return output[0][0]
+        else:
+            return output[0][0]
 
 async def daily_claim(uid):
     output = await select_query(column='status', table='inventory', condition_column='uid', condition_value=int(uid))

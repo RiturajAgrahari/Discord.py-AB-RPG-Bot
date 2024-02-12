@@ -123,6 +123,27 @@ async def create_events(uid):
     mydb.close()
 
 
+async def create_updated_db():
+    mydb = open_database()
+    try:
+        mycursor = mydb.cursor()
+        sql = 'CREATE TABLE inventory (id int NOT NULL AUTO_INCREMENT, uid int, achievement varchar(300), storage varchar(400), koens int DEFAULT 0, status varchar(20) DEFAULT "not_claimed", PRIMARY KEY (id));'
+        mycursor.execute(sql)
+        mydb.commit()
+    except Exception as e:
+        print(e)
+    mydb.close()
+
+    mydb = open_database()
+    try:
+        mycursor = mydb.cursor()
+        sql = 'CREATE TABLE events (id int NOT NULL AUTO_INCREMENT, uid int, storage varchar(100), letter_event varchar(25), PRIMARY KEY (id));'
+        mycursor.execute(sql)
+        mydb.commit()
+    except Exception as e:
+        print(e)
+    mydb.close()
+
 # def test(**kwargs):
 #     print(kwargs)
 #     print(tuple(kwargs.keys()))
