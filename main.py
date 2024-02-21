@@ -151,7 +151,7 @@ async def send_error(file, function_name, error, server='Anonymous'):
 
 @client.event
 async def on_error(event, *args, **kwargs):
-    message = args[0] # Gets the message object
+    message = args # Gets the message object
     await send_error(__file__, event, 'Their is some error!')
 
 client.run(os.getenv("TOKEN"))
