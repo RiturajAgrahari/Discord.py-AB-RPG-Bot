@@ -143,10 +143,3 @@ async def create_updated_db():
     except Exception as e:
         print(e)
     mydb.close()
-
-# def test(**kwargs):
-#     print(kwargs)
-#     print(tuple(kwargs.keys()))
-#     print(tuple(kwargs.values()))
-#
-# test(first=1, second=2)
