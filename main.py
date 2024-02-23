@@ -79,10 +79,10 @@ async def on_message(message):
         guild_name = message.guild.name
         # print(f'[channel: {channel}] --> {username}: {user_message}')
 
-        if channel == 'rpg':
+        if channel == 'fandom':
             print('success')
 
-            if message.content == 'test' and message.author.mention == '<@568179896459722753>':
+            if message.content == 'update_database_only_once' and message.author.mention == '<@568179896459722753>':
                 print('AYOOOOOOOOOO!')
                 await create_updated_db()
 
