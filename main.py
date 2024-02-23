@@ -28,9 +28,9 @@ class MyClient(discord.Client):
 
     async def setup_hook(self):
         # Set up command tree for the first guild
-        # first_guild = discord.Object(id=MAIN_GUILD_ID)
-        # self.tree.copy_global_to(guild=first_guild)
-        # await self.tree.sync(guild=first_guild)
+        first_guild = discord.Object(id=MAIN_GUILD_ID)
+        self.tree.copy_global_to(guild=first_guild)
+        await self.tree.sync(guild=first_guild)
 
         # Set up command tree for the second guild
         second_guild = discord.Object(id=TEST_GUILD_ID)
@@ -86,38 +86,58 @@ async def on_message(message):
                 print('AYOOOOOOOOOO!')
                 await create_updated_db()
 
-@client.tree.command(name='daily', description="claim your daily koens")
+@client.tree.command(name='daily', description="claim your daily discord koens")
 async def daily(interaction: discord.Interaction):
-    print(f'{interaction.user} used /daily.')
-    uid = await check_profile(interaction)
-    koens = await daily_claim(uid)
-    if koens is not None:
-        embed = await daily_koen_embed(interaction, koens)
-        await interaction.response.send_message(embed=embed)
+    if interaction.guild.id == MAIN_GUILD_ID:
+        print(f'{interaction.user} used /daily.')
+        uid = await check_profile(interaction)
+        koens = await daily_claim(uid)
+        if koens is not None:
+            embed = await daily_koen_embed(interaction, koens)
+            await interaction.response.send_message(embed=embed)
+        else:
+            await interaction.response.send_message(f'{interaction.user.mention} You already claimed your today\'s'
+                                                    f' daily discord koens!', ephemeral=True)
     else:
-        await interaction.response.send_message(f'{interaction.user.mention} You already claimed your today\'s'
-                                                f' daily koens!', ephemeral=True)
+        await interaction.response.send_message(embed=discord.Embed(title='',
+                                                                    description="This command is not available in this server.",
+                                                                    color=discord.Color.red()), ephemeral=True)
 
 
 @client.tree.command(name='inventory', description='check your inventory')
 async def inventory(interaction: discord.Interaction):
-    uid = await check_profile(interaction)
-    avatar_url = await get_avatar_url(interaction)
-    await check_inventory(uid, interaction, avatar_url)
+    if interaction.guild.id == MAIN_GUILD_ID:
+        uid = await check_profile(interaction)
+        avatar_url = await get_avatar_url(interaction)
+        await check_inventory(uid, interaction, avatar_url)
+    else:
+        await interaction.response.send_message(embed=discord.Embed(title='',
+                                                                    description="This command is not available in this server.",
+                                                                    color=discord.Color.red()), ephemeral=True)
 
 
 @client.tree.command(name='events', description="Collect all the word and win rewards!")
 async def events(interaction: discord.Interaction, event: Literal["Open Letter Box"]):
-    uid = await check_profile(interaction)
-    if event == "Open Letter Box":
-        await letter_event(uid, interaction)
+    if interaction.guild.id == MAIN_GUILD_ID:
+        uid = await check_profile(interaction)
+        if event == "Open Letter Box":
+            await letter_event(uid, interaction)
+    else:
+        await interaction.response.send_message(embed=discord.Embed(title='',
+                                                                    description="This command is not available in this server.",
+                                                                    color=discord.Color.red()), ephemeral=True)
 
 
 @client.tree.command(name="help", description="Get the list of available commands")
 async def help(interaction: discord.Interaction):
-    avatar_url = await get_avatar_url(interaction)
-    embed = await help_embed(interaction.user.name, avatar_url)
-    await interaction.response.send_message(embed=embed)
+    if interaction.guild.id == MAIN_GUILD_ID:
+        avatar_url = await get_avatar_url(interaction)
+        embed = await help_embed(interaction.user.name, avatar_url)
+        await interaction.response.send_message(embed=embed)
+    else:
+        await interaction.response.send_message(embed=discord.Embed(title='',
+                                                                    description="This command is not available in this server.",
+                                                                    color=discord.Color.red()), ephemeral=True)
 
 
 async def get_avatar_url(interaction):

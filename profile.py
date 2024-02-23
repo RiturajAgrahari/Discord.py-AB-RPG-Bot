@@ -5,20 +5,23 @@ from embed import inventory_embed
 
 async def check_profile(interaction: discord.Interaction):
     output = await select_query(column='uid', table='profile', condition_column='discord_id', condition_value=str(interaction.user.mention))
-
+    print(output)
     if len(output) == 0:
+        print('way 1')
         await creating_main_profile(interaction)
         uid = await check_profile(interaction)
-        await create_inventory(uid)
-        await create_events(uid)
         return uid
     else:
-        output_inv = await select_query(column='uid', table='inventory', condition_column='id', condition_value=output[0][0])
+        print('way 2')
+        output_inv = await select_query(column='uid', table='inventory', condition_column='uid', condition_value=output[0][0])
+        print(output_inv)
         if len(output_inv) == 0:
+            print('way 2.1')
             await create_inventory(output[0][0])
             await create_events(output[0][0])
             return output[0][0]
         else:
+            print('way 2.2')
             return output[0][0]
 
 async def daily_claim(uid):

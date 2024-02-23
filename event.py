@@ -41,5 +41,6 @@ async def letter_event(uid, interaction):
         else:
             pass
     else:
-        await interaction.response.send_message(f'You need 100 {KOEN_EMOJI} to open a letter box',
+        await interaction.response.send_message(f'You need 100 {KOEN_EMOJI} to open a letter box, use'
+                                                f' </daily:1210461850144346152> to get discord koens',
                                                 ephemeral=True)

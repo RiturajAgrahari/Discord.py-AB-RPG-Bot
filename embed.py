@@ -7,14 +7,14 @@ EVENT_WORD = 'ARENA BREAKOUT'
 async def help_embed(name, avatar):
     embed = discord.Embed(
         title='AB RPG',
-        description='Players can gain koens by claiming it once a day with the command /daily.'
-                    ' A player can use their koens at events by using the command /events,'
+        description='Players can gain discord koens by claiming it once a day with the command /daily.'
+                    ' A player can use their discord koens at events by using the command /events,'
                     ' letter event.',
         color=discord.Color.blue()
     )
     embed.add_field(
-        name="</daily:1199262765622251551>",
-        value="Claim your daily koens",
+        name="</daily:1210461850144346152>",
+        value="Claim your daily discord koens",
         inline=False
     )
     embed.add_field(
@@ -23,13 +23,13 @@ async def help_embed(name, avatar):
         inline=False
     )
     embed.add_field(
-        name="</inventory:1199977281179893822>",
+        name="</inventory:1210461850144346153>",
         value="List the items you have in your inventory.",
         inline=False
     )
     embed.add_field(
-        name="</events:1199637921129566219>",
-        value="Use koens to play events and earn rewards!",
+        name="</events:1210461850144346154>",
+        value="Use discord koens to play events and earn rewards!",
         inline=False
     )
     # embed.set_author(name=name, icon_url=avatar)
@@ -174,7 +174,7 @@ async def letter_event_embed(interaction, letter, owned):
 
 async def inventory_embed(koens, inventory, achievement, avatar_url, username, event):
     embed = discord.Embed(
-        title=f'Koens',
+        title=f'Discord Koens',
         description='',
         colour=None
     )
