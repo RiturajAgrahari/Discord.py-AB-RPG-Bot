@@ -3,7 +3,7 @@ import random
 from database import select_query, update_query
 from embed import letter_event_embed
 
-KOEN_EMOJI = '<:Koen:1199302656825511988>'
+KOEN_EMOJI = '<:Koen:1211589943147892756>'
 
 async def letter_event(uid, interaction):
     Choices = 'ABCDEFGHIJKLMNOPQRSTUVWXY#'

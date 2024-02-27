@@ -18,7 +18,7 @@ load_dotenv()
 MAIN_GUILD_ID = int(os.getenv("MAIN_SERVER_ID"))
 TEST_GUILD_ID = int(os.getenv("TEST_SERVER_ID"))
 
-KOEN_EMOJI = '<:Koen:1199302656825511988>'
+KOEN_EMOJI = '<:Koen:1211589943147892756>'
 
 
 class MyClient(discord.Client):

@@ -1,7 +1,7 @@
 import discord
 import string
 
-KOEN_EMOJI = '<:Koen:1199302656825511988>'
+KOEN_EMOJI = '<:Koen:1211589943147892756>'
 EVENT_WORD = 'ARENA BREAKOUT'
 
 async def help_embed(name, avatar):
