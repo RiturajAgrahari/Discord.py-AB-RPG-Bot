@@ -4,17 +4,18 @@ import string
 KOEN_EMOJI = '<:Koen:1211589943147892756>'
 EVENT_WORD = 'ARENA BREAKOUT'
 
+
 async def help_embed(name, avatar):
     embed = discord.Embed(
         title='AB RPG',
-        description='Players can gain discord koens by claiming it once a day with the command /daily.'
-                    ' A player can use their discord koens at events by using the command /events,'
+        description='Players can gain discord koen by claiming it once a day with the command /daily.'
+                    ' A player can use their discord koen at events by using the command /events,'
                     ' letter event.',
         color=discord.Color.blue()
     )
     embed.add_field(
         name="</daily:1210461850144346152>",
-        value="Claim your daily discord koens",
+        value="Claim your daily discord koen",
         inline=False
     )
     embed.add_field(
@@ -29,7 +30,7 @@ async def help_embed(name, avatar):
     )
     embed.add_field(
         name="</events:1210461850144346154>",
-        value="Use discord koens to play events and earn rewards!",
+        value="Use discord koen to play events and earn rewards!",
         inline=False
     )
     # embed.set_author(name=name, icon_url=avatar)
@@ -174,7 +175,7 @@ async def letter_event_embed(interaction, letter, owned):
 
 async def inventory_embed(koens, inventory, achievement, avatar_url, username, event):
     embed = discord.Embed(
-        title=f'Discord Koens',
+        title=f'Discord Koen',
         description='',
         colour=None
     )

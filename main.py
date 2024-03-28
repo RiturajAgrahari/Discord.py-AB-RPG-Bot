@@ -87,6 +87,7 @@ async def on_message(message):
                 print('AYOOOOOOOOOO!')
                 await create_updated_db()
 
+
 @client.tree.command(name='daily', description="claim your daily discord koens")
 async def daily(interaction: discord.Interaction):
     if interaction.guild.id == MAIN_GUILD_ID:
