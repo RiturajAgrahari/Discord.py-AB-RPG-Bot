@@ -11,7 +11,7 @@ from discord import app_commands
 
 from profile import *
 from event import letter_event
-from database import create_updated_db, bot_uses, set_bot_uses_date
+from database import create_updated_db, bot_uses
 from embed import daily_koen_embed, help_embed
 
 load_dotenv()
@@ -167,7 +167,6 @@ async def get_avatar_url(interaction):
 async def reset_data():
     print('reseting started...')
     await reset_status()
-    await set_bot_uses_date()
     print('reset successful!')
 
 

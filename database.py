@@ -148,17 +148,6 @@ async def create_updated_db():
     mydb.close()
 
 
-async def set_bot_uses_date():
-    today_date = date.today()
-    mydb = open_database()
-    mycursor = mydb.cursor()
-    sql = 'INSERT INTO bot_info (date) VALUES (%s)'
-    val = [(str(today_date))]
-    mycursor.execute(sql, val)
-    mydb.commit()
-    mydb.close()
-
-
 async def bot_uses(today_date):
     mydb = open_database()
     mycursor = mydb.cursor()
