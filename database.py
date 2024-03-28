@@ -151,7 +151,7 @@ async def create_updated_db():
 async def bot_uses(today_date):
     mydb = open_database()
     mycursor = mydb.cursor()
-    sql = f"UPDATE bot_info set lucky_bot = lucky_bot + 1 WHERE date = '{today_date}'"
+    sql = f"UPDATE bot_info set rpg_bot = rpg_bot + 1 WHERE date = '{today_date}'"
     mycursor.execute(sql)
     mydb.commit()
     mydb.close()
