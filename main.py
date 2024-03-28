@@ -88,7 +88,7 @@ async def on_message(message):
                 await create_updated_db()
 
 
-@client.tree.command(name='daily', description="claim your daily discord koens")
+@client.tree.command(name='daily', description="claim your daily discord koen")
 async def daily(interaction: discord.Interaction):
     if interaction.guild.id == MAIN_GUILD_ID:
         print(f'{interaction.user} used /daily.')
@@ -99,7 +99,7 @@ async def daily(interaction: discord.Interaction):
             await interaction.response.send_message(embed=embed)
         else:
             await interaction.response.send_message(f'{interaction.user.mention} You already claimed your today\'s'
-                                                    f' daily discord koens!', ephemeral=True)
+                                                    f' daily discord koen!', ephemeral=True)
     else:
         await interaction.response.send_message(embed=discord.Embed(title='',
                                                                     description="This command is not available in this server.",
