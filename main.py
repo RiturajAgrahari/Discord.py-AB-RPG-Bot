@@ -55,7 +55,7 @@ async def on_ready():
 @tasks.loop(minutes=1)
 async def my_loop():
     # Get the current UTC time
-    current_time_utc = datetime.datetime.now(datetime.UTC)
+    current_time_utc = datetime.datetime.now(datetime.datetime.UTC)
 
     # Check if it's UTC 00:00
     if current_time_utc.hour == 0 and current_time_utc.minute == 0:
