@@ -86,7 +86,7 @@ async def on_message(message):
 
                 if message.content == 'update_database_only_once' and message.author.mention == '<@568179896459722753>':
                     print('AYOOOOOOOOOO!')
-                    await create_updated_db()
+                    await reset_data()
 
         else:
             pass
