@@ -81,7 +81,7 @@ async def on_message(message):
         # print(f'[channel: {channel}] --> {username}: {user_message}')
 
         if message.guild.id == MAIN_GUILD_ID:
-            if channel == 'fandom':
+            if channel == 'fandom-bots':
                 print('success')
 
                 if message.content == 'update_database_only_once' and message.author.mention == '<@568179896459722753>':
