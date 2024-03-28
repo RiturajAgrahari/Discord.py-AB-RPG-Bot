@@ -1,4 +1,5 @@
 import os
+import sys
 import discord
 
 from datetime import datetime
@@ -171,8 +172,9 @@ async def send_error(file, function_name, error, server='Anonymous'):
 
 @client.event
 async def on_error(event, *args, **kwargs):
-    message = args # Gets the message object
-    await send_error(__file__, event, 'Their is some error!')
+    error = str(sys.exc_info())
+    error = error.replace(',', '\n')
+    await send_error(__file__, event, error)
 
 client.run(os.getenv("TOKEN"))
 
