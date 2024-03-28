@@ -1,6 +1,7 @@
 import os
-from dotenv import load_dotenv
 import mysql.connector
+from datetime import date
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -8,6 +9,7 @@ HOST = os.getenv("MY_SQL_HOST")
 USER = os.getenv("MY_SQL_USER")
 PASSWORD = os.getenv("MY_SQL_PASSWORD")
 DATABASE = os.getenv("MY_SQL_DATABASE")
+
 
 def open_database():
     mydb = mysql.connector.connect(
@@ -78,7 +80,6 @@ async def update_query(table:str, key_value:dict, condition_column:str=None, con
         else:
             print('wrong value datatype')
 
-
     set = set.lstrip(',')
 
     mydb = open_database()
@@ -104,6 +105,7 @@ async def creating_main_profile(interaction):
     mydb.commit()
     mydb.close()
 
+
 async def create_inventory(uid):
     mydb = open_database()
     mycursor = mydb.cursor()
@@ -112,6 +114,7 @@ async def create_inventory(uid):
     mycursor.execute(sql, val)
     mydb.commit()
     mydb.close()
+
 
 async def create_events(uid):
     mydb = open_database()
@@ -142,4 +145,24 @@ async def create_updated_db():
         mydb.commit()
     except Exception as e:
         print(e)
+    mydb.close()
+
+
+async def set_bot_uses_date():
+    today_date = date.today()
+    mydb = open_database()
+    mycursor = mydb.cursor()
+    sql = 'INSERT INTO bot_info (date) VALUES (%s)'
+    val = [(str(today_date))]
+    mycursor.execute(sql, val)
+    mydb.commit()
+    mydb.close()
+
+
+async def bot_uses(today_date):
+    mydb = open_database()
+    mycursor = mydb.cursor()
+    sql = f"UPDATE bot_info set lucky_bot = lucky_bot + 1 WHERE date = '{today_date}'"
+    mycursor.execute(sql)
+    mydb.commit()
     mydb.close()

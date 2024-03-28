@@ -5,6 +5,7 @@ from embed import letter_event_embed
 
 KOEN_EMOJI = '<:Koen:1211589943147892756>'
 
+
 async def letter_event(uid, interaction):
     Choices = 'ABCDEFGHIJKLMNOPQRSTUVWXY#'
 
@@ -28,7 +29,6 @@ async def letter_event(uid, interaction):
                 letters += f'{reword},'
                 await update_query(table='events', key_value={'storage': letters}, condition_column='uid',
                                    condition_value=int(uid))
-
 
         await interaction.response.send_message(embed=embed)
 
