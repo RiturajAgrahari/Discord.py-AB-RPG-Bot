@@ -37,7 +37,6 @@ async def check_inventory(uid, interaction, avatar_url):
     koens = await select_query(column='koens', table='inventory', condition_column='uid', condition_value=int(uid))
     inventory = await select_query(column='storage', table='inventory', condition_column='uid', condition_value=int(uid))
     achievement = await select_query(column='achievement', table='inventory', condition_column='uid', condition_value=int(uid))
-    event_storage = await select_query(column='storage', table='events', condition_column='uid', condition_value=int(uid))
     storage = ''
     for i in range(len(str(inventory[0][0]).split(',')) - 1):
         storage += f":regional_indicator_{str(inventory[0][0]).split(',')[i].lower()}: "
