@@ -6,23 +6,20 @@ from database import select_query, creating_main_profile, create_inventory, upda
 
 async def check_profile(interaction: discord.Interaction):
     output = await select_query(column='uid', table='profile', condition_column='discord_id', condition_value=str(interaction.user.mention))
-    print(output)
-    if len(output) == 0:
-        print('way 1')
+    if not output:
+        print(f'creating {interaction.user.name} profile')
         await creating_main_profile(interaction)
         uid = await check_profile(interaction)
         return uid
     else:
-        print('way 2')
         output_inv = await select_query(column='uid', table='inventory', condition_column='uid', condition_value=output[0][0])
-        print(output_inv)
-        if len(output_inv) == 0:
-            print('way 2.1')
+        if not output_inv:
+            print(f'creating {interaction.user.name} inventory')
             await create_inventory(output[0][0])
+            print(f'creating {interaction.user.name} event table')
             await create_events(output[0][0])
             return output[0][0]
         else:
-            print('way 2.2')
             return output[0][0]
 
 

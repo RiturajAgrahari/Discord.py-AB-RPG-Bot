@@ -40,7 +40,7 @@ async def letter_event(uid, interaction):
                 await update_query(table='events', key_value={'letter_event': 'won'}, condition_column='uid', condition_value=int(uid))
                 await update_query(table='events', key_value={'storage': None}, condition_column='uid',
                                    condition_value=int(uid))
-                await update_query(table='inventory', key_value={'achieveent': '🏅'}, condition_column='uid', condition_value=int(uid))
+                await update_query(table='inventory', key_value={'achievement': '🏅'}, condition_column='uid', condition_value=int(uid))
             else:
                 pass
         else:

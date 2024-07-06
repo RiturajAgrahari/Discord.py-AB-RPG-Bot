@@ -11,13 +11,13 @@ from discord import app_commands
 
 from profile import *
 from event import letter_event
-from database import create_updated_db, bot_uses
+from database import bot_uses
 from embed import daily_koen_embed, help_embed
 
 load_dotenv()
 
 MAIN_GUILD_ID = int(os.getenv("MAIN_SERVER_ID"))
-TEST_GUILD_ID = int(os.getenv("TEST_SERVER_ID"))
+# TEST_GUILD_ID = int(os.getenv("TEST_SERVER_ID"))
 
 KOEN_EMOJI = '<:Koen:1211589943147892756>'
 
@@ -34,10 +34,10 @@ class MyClient(discord.Client):
         await self.tree.sync(guild=first_guild)
 
         # Set up command tree for the second guild
-        second_guild = discord.Object(id=TEST_GUILD_ID)
-        if second_guild.id != MAIN_GUILD_ID:
-            self.tree.copy_global_to(guild=second_guild)
-            await self.tree.sync(guild=second_guild)
+        # second_guild = discord.Object(id=TEST_GUILD_ID)
+        # if second_guild.id != MAIN_GUILD_ID:
+        #     self.tree.copy_global_to(guild=second_guild)
+        #     await self.tree.sync(guild=second_guild)
 
 
 intents = discord.Intents.default()
@@ -67,13 +67,13 @@ async def my_loop():
 
 @client.event
 async def on_message(message):
-    # Checks if the message is recieved in DM
-    if message.channel.type == discord.ChannelType.private:
-        print(f'DM --> [{message.author}] : {message.content}')
-
     # Check if the message author is not client itself
     if message.author == client.user:
         pass
+
+    # Checks if the message is recieved in DM
+    elif message.channel.type == discord.ChannelType.private:
+        print(f'DM --> [{message.author}] : {message.content}')
 
     # Message in server channels
     else:
@@ -87,14 +87,14 @@ async def on_message(message):
             if channel == 'fandom-bots':
                 print('success')
 
-                if message.content == 'update_database_only_once' and message.author.mention == '<@568179896459722753>':
-                    print('AYOOOOOOOOOO!')
+                if message.content == '**reset_data' and message.author.mention == '<@568179896459722753>':
                     await reset_data()
 
         else:
             pass
 
 
+# Last Optimization [06-07-2024]
 @client.tree.command(name='daily', description="claim your daily discord koen")
 async def daily(interaction: discord.Interaction):
     if interaction.guild.id == MAIN_GUILD_ID:
@@ -106,7 +106,7 @@ async def daily(interaction: discord.Interaction):
             await interaction.response.send_message(embed=embed)
         else:
             await interaction.response.send_message(f'{interaction.user.mention} You already claimed your today\'s'
-                                                    f' daily discord koen!', ephemeral=True)
+                                                    f' daily discord koens!', ephemeral=True)
     else:
         await interaction.response.send_message(
             embed=discord.Embed(title='',
@@ -115,6 +115,7 @@ async def daily(interaction: discord.Interaction):
             ephemeral=True)
 
 
+# Last Optimization [06-07-2024]
 @client.tree.command(name='inventory', description='check your inventory')
 async def inventory(interaction: discord.Interaction):
     if interaction.guild.id == MAIN_GUILD_ID:
@@ -123,9 +124,13 @@ async def inventory(interaction: discord.Interaction):
         avatar_url = await get_avatar_url(interaction)
         await check_inventory(uid, interaction, avatar_url)
     else:
-        await interaction.response.send_message(embed=discord.Embed(title='',
-                                                                    description="This command is not available in this server.",
-                                                                    color=discord.Color.red()), ephemeral=True)
+        await interaction.response.send_message(
+            embed=discord.Embed(
+                title='',
+                description="This command is not available in this server.",
+                color=discord.Color.red()
+                                ),
+            ephemeral=True)
 
 
 @client.tree.command(name='events', description="Collect all the word and win rewards!")

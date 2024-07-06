@@ -16,7 +16,8 @@ def open_database():
         host=HOST,
         user=USER,
         password=PASSWORD,
-        database=DATABASE
+        database=DATABASE,
+        auth_plugin="mysql_native_password"
     )
     return mydb
 
@@ -149,9 +150,5 @@ async def create_updated_db():
 
 
 async def bot_uses(today_date):
-    mydb = open_database()
-    mycursor = mydb.cursor()
-    sql = f"UPDATE bot_info set rpg_bot = rpg_bot + 1 WHERE date = '{today_date}'"
-    mycursor.execute(sql)
-    mydb.commit()
-    mydb.close()
+    await update_query(table="bot_info", key_value={"rpg_bot": 1}, condition_column="date",
+                       condition_value=str(today_date), operation="addition")
