@@ -39,8 +39,8 @@ async def check_inventory(uid, interaction, avatar_url):
     achievement = await select_query(column='achievement', table='inventory', condition_column='uid', condition_value=int(uid))
     event_storage = await select_query(column='storage', table='events', condition_column='uid', condition_value=int(uid))
     storage = ''
-    for i in range(len(str(event_storage[0][0]).split(',')) - 1):
-        storage += f":regional_indicator_{str(event_storage[0][0]).split(',')[i].lower()}: "
+    for i in range(len(str(inventory[0][0]).split(',')) - 1):
+        storage += f":regional_indicator_{str(inventory[0][0]).split(',')[i].lower()}: "
     embed = await inventory_embed(koens[0][0], inventory[0][0], achievement[0][0], avatar_url, interaction.user.name, storage)
     await interaction.response.send_message(embed=embed)
 

@@ -11,7 +11,7 @@ from discord import app_commands
 
 from profile import *
 from event import letter_event
-from database import bot_uses
+from database import bot_uses, create_updated_db
 from embed import daily_koen_embed, help_embed
 
 load_dotenv()
@@ -89,6 +89,10 @@ async def on_message(message):
 
                 if message.content == '**reset_data' and message.author.mention == '<@568179896459722753>':
                     await reset_data()
+
+            else:
+                if message.content == '**db' and message.author.mention == '<@568179896459722753>':
+                    await create_updated_db()
 
         else:
             pass

@@ -181,8 +181,8 @@ async def inventory_embed(koens, inventory, achievement, avatar_url, username, e
     )
     embed.set_author(name=username, icon_url=avatar_url)
     embed.add_field(name=f'{KOEN_EMOJI} {koens}', value='', inline=False)
-    if inventory is not None:
-        embed.add_field(name='Inventory', value=inventory, inline=False)
+    # if inventory is not None:
+    #     embed.add_field(name='Inventory', value=inventory, inline=False)
     if achievement is not None:
         embed.add_field(name='Achievement', value=achievement, inline=False)
     if event is not None:

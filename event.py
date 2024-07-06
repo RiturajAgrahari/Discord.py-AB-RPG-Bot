@@ -18,7 +18,7 @@ async def letter_event(uid, interaction):
             await update_query(table='inventory', key_value={'koens': 100}, condition_column='uid', condition_value=int(uid), operation='subtraction')
             randomletter = random.choice(Choices)
             # print(randomletter)
-            items = await select_query(column='storage', table='events', condition_column='uid', condition_value=int(uid))
+            items = await select_query(column='storage', table='inventory', condition_column='uid', condition_value=int(uid))
             embed, refund, reword, win = await letter_event_embed(interaction, randomletter, items[0][0])
             # print(refund, reword, win)
             if refund:
@@ -26,11 +26,11 @@ async def letter_event(uid, interaction):
 
             if reword:
                 if items[0][0] is None:
-                    await update_query(table='events', key_value={'storage': f'{reword},'}, condition_column='uid', condition_value=int(uid))
+                    await update_query(table='inventory', key_value={'storage': f'{reword},'}, condition_column='uid', condition_value=int(uid))
                 else:
                     letters = items[0][0]
                     letters += f'{reword},'
-                    await update_query(table='events', key_value={'storage': letters}, condition_column='uid',
+                    await update_query(table='inventory', key_value={'storage': letters}, condition_column='uid',
                                        condition_value=int(uid))
 
             await interaction.response.send_message(embed=embed)
@@ -38,7 +38,7 @@ async def letter_event(uid, interaction):
             if win is True:
                 await update_query(table='inventory', key_value={'koens': 10000}, condition_column='uid', condition_value=int(uid), operation='addition')
                 await update_query(table='events', key_value={'letter_event': 'won'}, condition_column='uid', condition_value=int(uid))
-                await update_query(table='events', key_value={'storage': None}, condition_column='uid',
+                await update_query(table='inventory', key_value={'storage': None}, condition_column='uid',
                                    condition_value=int(uid))
                 await update_query(table='inventory', key_value={'achievement': '🏅'}, condition_column='uid', condition_value=int(uid))
             else:

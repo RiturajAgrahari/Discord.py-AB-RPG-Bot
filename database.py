@@ -128,25 +128,30 @@ async def create_events(uid):
 
 
 async def create_updated_db():
-    mydb = open_database()
-    try:
-        mycursor = mydb.cursor()
-        sql = 'CREATE TABLE inventory (id int NOT NULL AUTO_INCREMENT, uid int, achievement varchar(300), storage varchar(400), koens int DEFAULT 0, status varchar(20) DEFAULT "not_claimed", PRIMARY KEY (id));'
-        mycursor.execute(sql)
-        mydb.commit()
-    except Exception as e:
-        print(e)
-    mydb.close()
+    user_data = await select_query(column="uid, storage", table="events")
+    print(user_data)
+    data_transfer_status = "OK"
+    counter = 0
+    for user_storage in user_data:
+        counter += 1
+        try:
+            await update_query(table="inventory", key_value={"storage": str(user_storage[1])}, condition_column="uid", condition_value=user_storage[0])
+        except:
+            data_transfer_status = "ERROR"
+            print(f"{counter} : error updating storage of user with UID: {user_storage[0]}")
 
-    mydb = open_database()
-    try:
+    if data_transfer_status is "OK":
+        mydb = open_database()
         mycursor = mydb.cursor()
-        sql = 'CREATE TABLE events (id int NOT NULL AUTO_INCREMENT, uid int, storage varchar(100), letter_event varchar(25), PRIMARY KEY (id));'
+        sql = 'ALTER TABLE events DROP COLUMN storage'
         mycursor.execute(sql)
         mydb.commit()
-    except Exception as e:
-        print(e)
-    mydb.close()
+        mydb.close()
+        print("Data is completely transfered!")
+
+    else:
+        print("Data is not completely transfered!")
+
 
 
 async def bot_uses(today_date):
