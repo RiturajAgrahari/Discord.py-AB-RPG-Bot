@@ -81,8 +81,8 @@ async def letter_event_embed(interaction, letter, owned):
     else:
         embed.add_field(
             name=f':cyclone:',
-            value=f'WOW! You got a magical word! :magic_wand:\nThis magical word will randomly transform into any of'
-                  f' the word that is left for your event!',
+            value=f'WOW! You got a magical letter! :magic_wand:\nThis magical letter will randomly transform into any of'
+                  f' the letter that is left for your event!',
             inline=False
         )
 
@@ -118,7 +118,7 @@ async def letter_event_embed(interaction, letter, owned):
                     value=f':magic_wand:your magical word transformed into the letter \'{value}\'',
                     inline=False
                 )
-                msg = f'You got 100% refund on getting a :magic_wand:magical word!'
+                msg = f'You got 100% refund on getting a :magic_wand:magical letter!'
                 refund += 100
                 reword = value
                 break
@@ -149,7 +149,7 @@ async def letter_event_embed(interaction, letter, owned):
     if win is True:
         embed.add_field(
             name=f':confetti_ball: CONGRATULATIONS :confetti_ball:',
-            value=f'You got all the words in \'{EVENT_WORD}\'',
+            value=f'You got all the letters in \'{EVENT_WORD}\'',
             inline=False
         )
         embed.add_field(
